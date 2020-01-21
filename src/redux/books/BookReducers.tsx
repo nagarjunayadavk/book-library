@@ -18,16 +18,13 @@ export const reducer = (state = {...initialState}, action: BOOK_ACTION_TYPE ) =>
         case ADD_BOOK:
             return {...state, books: [...state.books, action.book]};
         case UPDATE_BOOK:
-            return { ...state, books: state.books.slice().splice(state.books.findIndex(book => book.id === action.book.id), 1, action.book)}
+            const newbooks = state.books.slice();
+            newbooks.splice(state.books.findIndex(book => book.id === action.book.id), 1, action.book);
+            return { ...state, books: newbooks}
         case DELETE_BOOK:
             return { ...state, books: state.books.slice().splice(state.books.findIndex(book => book.id === action.id), 1)}
-        case SERACH_BOOKS:
-            const {value} = action;
-            return { ...state, value,  books:  _.filter(state.books, book => book.author.includes(value)) }
-            // return { ...state, books: state.books.filter((val) => val.includes(value))}
         default: 
             return {...state };
-
     }
 }
 

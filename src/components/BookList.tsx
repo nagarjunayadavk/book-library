@@ -3,18 +3,45 @@ import { connect } from 'react-redux';
 import { fetchBooksAsync, searchBooksAsync } from '../redux/books/BookActions';
 import BookForm from './BookForm';
 import SearchBar from './SearchBar';
-
+import _ from 'underscore';
 class BookList extends React.Component<any, any> {
-
+    state = {
+        orignalBooks: this.props.books,
+        books: this.props.books,
+        book: {}
+    }
     componentDidMount() {
         this.props.fetchBooks();
+    }
+    static getDerivedStateFromProps(newProps: any, prevState: any) {
+        if (JSON.stringify(newProps.books) !== JSON.stringify(prevState.orignalBooks)) {
+            return { ...prevState, books: newProps.books, orignalBooks: newProps.books }
+        }
+        return { ...prevState };
+    }
+
+    onSearch = (value: string) => {
+        this.setState({ books: _.filter(this.props.books, (book: any) => book.author.includes(value) || book.description.includes(value) || book.title.includes(value)) })
+    }
+
+    editBook = (book: object) => {
+        this.setState({ book: book });
+    }
+    clearBook = () => {
+        this.setState({ book: {} });
     }
     render() {
         return (
             <Fragment>
-                <div>
-                    <SearchBar />
-                </div>
+                <header>
+                    <div className="header-left">
+                      <h3>Book Library</h3>
+                    </div>
+                    <div className="header-right">
+                       <SearchBar onSearch={this.onSearch} />
+                    </div>
+                    
+                </header>
                 <div>
                     <table>
                         <thead>
@@ -28,25 +55,30 @@ class BookList extends React.Component<any, any> {
                         </thead>
                         <tbody>
 
-                            {this.props.books.map((book: any) => {
+                            {this.state.books.map((book: any) => {
+                                let props = { book: book };
                                 return (<tr key={book.id}>
                                     <td data-label="title">{book.title}</td>
                                     <td data-label="desc">{book.description}</td>
                                     <td data-label="price">{book.price}</td>
                                     <td data-label="author">{book.author}</td>
-                                    <td>Edit</td>
+                                    <td onClick={() => this.editBook(book)} >
+                                        <span className="edit-button">
+                                            Edit
+                                        </span>
+                                    </td>
                                 </tr>)
                             })}
                         </tbody>
                     </table>
-                    <button>Add Book</button>
-                    <BookForm />
+                    <BookForm book={this.state.book} clearBook={this.clearBook} key={new Date().getMilliseconds()} />
                 </div>
 
             </Fragment>
 
         );
     }
+
 }
 
 

@@ -1,44 +1,69 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { saveBookAsync } from '../redux/books/BookActions';
+import { saveBookAsync, saveEditBookAsync } from '../redux/books/BookActions';
 import { IBOOK } from '../redux/books/BookTypes';
 class BookForm extends React.Component<any, any> {
 
     constructor(props: any) {
         super(props);
         this.state = {
-            title: '',
-            description: '',
-            price: '',
-            author: ''
+            book: {}
         };
     }
 
     handleSubmit = (e: any) => {
         e.preventDefault();
-        const title = this.state.title;
-        const description = this.state.description;
-        const price = this.state.price;
-        const author = this.state.author;
-        const data = {
-            title,
-            description,
-            price,
-            author
-        }
-        this.props.saveBook(data);
+        this.props.saveBook(this.state.book);
+        // this.setState({book: {}});
+        this.props.clearBook();
     }
-
+    static getDerivedStateFromProps(newProps: any, prevState: any) {
+        if (newProps.book && (newProps.book.id != prevState.book.id)) {
+            return { ...prevState, book: newProps.book }
+        }
+        return { ...prevState };
+    }
     render() {
         return (
-            <div>
-                <h1>Create a Book</h1>
+            <div className="container">
+                <h1> {this.state.book.id ? "Update Book" : "Create Book"}</h1>
                 <form onSubmit={this.handleSubmit} >
-                    <input required type="text" placeholder="Enter Book Title" onChange={event => this.setState({ title: event.target.value })} /><br /><br />
-                    <textarea required rows={5} cols={28} placeholder="Enter Post Description" onChange={event => this.setState({ description: event.target.value })} /><br /><br />
-                    <input required type="text" placeholder="Enter Book Price" onChange={event => this.setState({ price: event.target.value })} /><br /><br />
-                    <input required type="text" placeholder="Enter Book Author!" onChange={event => this.setState({ author: event.target.value })} /><br /><br />
-                    <button>Create Book</button>
+                    <div className="row">
+                        <div className="col-25">
+                            <label> Title </label>
+                        </div>
+                        <div className="col-75">
+                            <input required type="text" placeholder="Enter Book Title" value={this.state.book.title} onChange={event => this.setState({ book: { ...this.state.book, title: event.target.value } })} />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-25">
+                            <label> Description </label>
+                        </div>
+                        <div className="col-75">
+                            <textarea required rows={5} cols={28} placeholder="Enter Post Description" value={this.state.book.description} onChange={event => this.setState({ book: { ...this.state.book, description: event.target.value } })} />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-25">
+                            <label> Price </label>
+                        </div>
+                        <div className="col-75">
+                            <input required type="text" placeholder="Enter Book Price" value={this.state.book.price} onChange={event => this.setState({ book: { ...this.state.book, price: event.target.value } })} />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-25">
+                            <label> Author </label>
+                        </div>
+                        <div className="col-75">
+                            <input required type="text" placeholder="Enter Book Author!" value={this.state.book.author} onChange={event => this.setState({ book: { ...this.state.book, author: event.target.value } })} />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <button>{this.state.book.id ? "Update Book" : "Create Book"}</button>
+                    </div>
+
                 </form>
             </div>
         );
@@ -52,7 +77,7 @@ const mapStateToProps = (store: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        saveBook: (book: any) => dispatch(saveBookAsync(book))
+        saveBook: (book: any) => book.id ? dispatch(saveEditBookAsync(book)) : dispatch(saveBookAsync(book))
     }
 };
 

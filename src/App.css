@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  display: block;
+  margin: 0 auto;
+  padding: 0 10px;
 }
 
 .App-logo {
@@ -37,7 +40,7 @@
   }
 }
 
-
+/* Book list display */
 table {
   border: 1px solid #ccc;
   border-collapse: collapse;
@@ -117,4 +120,89 @@ table th {
   table td:last-child {
     border-bottom: 0;
   }
+}
+.edit-button {
+  padding: 5px 10px;
+  background: #2196F3;
+  color: #fff;
+  border-radius: 5px;
+}
+/* Book Form Dispaly */
+
+input[type=text], textarea {
+  width: 90%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
+button {
+  background-color: #2196F3;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+  margin-right: 3%;
+}
+
+button:hover {
+  background-color: #03A9F4;
+}
+
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+
+.col-75 {
+  float: left;
+  width: 75%;
+  margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .col-25, .col-75, button {
+    width: 100%;
+    margin-top: 0;
+  }
+}
+
+.header-left{
+  float: left;
+    width: 50%;
+    text-align: left;
+}
+.header-left h3{
+  color: #2196f3;
+}
+.header-right{
+  float: right;
+  width: 50%;
+}
+.header-right input {
+  margin: 1.5em;
+  float: right;
 }

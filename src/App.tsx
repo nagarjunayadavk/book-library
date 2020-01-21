@@ -11,7 +11,6 @@ const App: React.FC = () => {
   return (
     <Provider  store= {store} >
       <div className="App">
-        <h3>Book Library</h3>
         <BookList/>
       </div>
     </Provider>
