@@ -4,8 +4,10 @@
 
    [Prerequisite] : Nodejs
    after downloading project navigate to book-library folder and run below commands.
+    ```
     **1:** npm install
     **2:** npm start -- it opens a new window(by default IE or user preferred browser.) url: http://localhost:3000/
+    ```
 
 ### json-server for DB.(npm package(for DB))
 
